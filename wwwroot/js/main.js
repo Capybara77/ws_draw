@@ -63,10 +63,6 @@ socket.onmessage = function (msg) {
             ctx.lineWidth = d;
         }
 
-        if (data[0] === 'color') {
-            changeColor(data[1]);
-        }
-
         if (data[0] === 'clear') {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
@@ -157,8 +153,6 @@ clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", () => {
         changeColor(clr.dataset.clr);
-
-        socket.send('color:' + clr.dataset.clr + ':');
     });
 });
 
