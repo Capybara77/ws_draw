@@ -49,13 +49,17 @@ socket.onmessage = function (msg) {
 
         if (data[0] === 'move') {
             var d = ctx.lineWidth;
+            var c = ctx.strokeStyle;
+
             canvas.getContext("2d");
-            ctx.lineWidth = data[5];
             ctx.beginPath();
             ctx.moveTo(data[1], data[2]);
             ctx.lineTo(data[3], data[4]);
+            ctx.lineWidth = data[5];
+            ctx.strokeStyle = data[6];
             ctx.stroke();
 
+            ctx.strokeStyle = c;
             ctx.lineWidth = d;
         }
 
@@ -223,7 +227,19 @@ window.addEventListener("mousemove", (e) => {
     ctx.lineTo(currentX, currentY);
     ctx.stroke();
 
-    socket.send('move:' + prevX + ':' + prevY + ':' + currentX + ':' + currentY + ':' + ctx.lineWidth + ':');
+    socket.send('move:' +
+        prevX +
+        ':' +
+        prevY +
+        ':' +
+        currentX +
+        ':' +
+        currentY +
+        ':' +
+        ctx.lineWidth +
+        ':' +
+        ctx.strokeStyle +
+        ':');
 
     prevX = currentX;
     prevY = currentY;
