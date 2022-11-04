@@ -66,8 +66,6 @@ socket.onmessage = function (msg) {
                 return;
             }
 
-
-
             const keyFrames = {
                 transform: `translate(${data[2]}px, ${data[3]}px)`
             };
@@ -76,6 +74,24 @@ socket.onmessage = function (msg) {
                 fill: "forwards"
             });
         }
+
+        if (data[0] === 'disconnect') {
+            let list = document.getElementsByClassName("trailer");
+
+            if (list.length === 0) return;
+
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].id !== 'me') {
+                    document.body.removeChild(list[i]);
+                    i--;
+                }
+            }
+
+            // const newList = [...list].filter(item => item.id !== "me");
+            // newList.forEach(item => {document.removeChild(item)});
+        }
+
+        
     } catch (e) {
         console.log(e);
     } 
@@ -140,6 +156,10 @@ saveBtn.addEventListener("click", () => {
 
 window.addEventListener("mousedown", (e) => draw = true);
 window.addEventListener("mouseup", (e) => draw = false);
+window.addEventListener("blur",
+    (e) => {
+
+    });
 window.addEventListener("mousemove", (e) => {
 
 
