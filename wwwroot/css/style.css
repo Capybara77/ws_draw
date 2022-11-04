@@ -5,6 +5,7 @@
 
 body {
     position: relative;
+    height: 100vh;
 }
 
 .nav {
@@ -19,6 +20,7 @@ body {
     justify-content: space-around;
     opacity: .3;
     transition: opacity .5s;
+
 }
 
 .nav:hover {
@@ -72,8 +74,8 @@ button {
 }
 
 .trailer {
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 100%;
 
     background-color: black;

@@ -1,6 +1,17 @@
 ﻿// trailer
 const trailer = document.querySelector("#me");
 
+const canvas = document.getElementById("canvas");
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+const ctx = canvas.getContext("2d");
+let prevX = null;
+let prevY = null;
+
+
+const customLineWidth = document.getElementById("lineValue");
+ctx.lineWidth = customLineWidth.value;
+
 const myId = makeid(20);
 
 function makeid(length) {
@@ -37,10 +48,15 @@ socket.onmessage = function (msg) {
         var data = msg.data.split(':');
 
         if (data[0] === 'move') {
+            var d = ctx.lineWidth;
+            canvas.getContext("2d");
+            ctx.lineWidth = data[5];
             ctx.beginPath();
             ctx.moveTo(data[1], data[2]);
             ctx.lineTo(data[3], data[4]);
             ctx.stroke();
+
+            ctx.lineWidth = d;
         }
 
         if (data[0] === 'color') {
@@ -54,7 +70,6 @@ socket.onmessage = function (msg) {
         if (data[0] === 'cur') {
             const userId = data[1];
             let t;
-
 
             t = document.getElementById(userId);
 
@@ -91,17 +106,23 @@ socket.onmessage = function (msg) {
             // newList.forEach(item => {document.removeChild(item)});
         }
 
-        
+
     } catch (e) {
         console.log(e);
-    } 
+    }
 
-   
+
 };
 
 function changeColor(color) {
     ctx.strokeStyle = color;
     trailer.style.backgroundColor = color;
+
+    const list = document.querySelectorAll('.trailer');
+
+    for (let t of list) {
+        t.style.backgroundColor = color;
+    }
 
 }
 
@@ -115,13 +136,17 @@ socket.onclose = function (event) {
     }
 };
 
-const canvas = document.getElementById("canvas");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
-const ctx = canvas.getContext("2d");
-let prevX = null;
-let prevY = null;
-ctx.lineWidth = 5;
+
+
+customLineWidth.addEventListener("change", (e) => {
+    if (customLineWidth.value < 1 || customLineWidth.value > 20) {
+        alert("че ебанулся");
+        ctx.lineWidth = 10;
+    }
+    ctx.lineWidth = customLineWidth.value;
+});
+
+
 let draw = false;
 let clrs = document.querySelectorAll(".clr");
 clrs = Array.from(clrs);
@@ -154,14 +179,23 @@ saveBtn.addEventListener("click", () => {
 
 
 
-window.addEventListener("mousedown", (e) => draw = true);
-window.addEventListener("mouseup", (e) => draw = false);
-window.addEventListener("blur",
-    (e) => {
+window.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;
+    draw = true;
+});
 
-    });
+window.addEventListener("mouseup", (e) => {
+    draw = false;
+});
+
+// window.addEventListener("blur",
+//     (e) => {
+
+//     });
+
 window.addEventListener("mousemove", (e) => {
 
+    if (e.button !== 0) return;
 
     const trailerX = e.clientX - trailer.offsetWidth / 2;
     const trailerY = e.clientY - trailer.offsetHeight / 2;
@@ -189,11 +223,10 @@ window.addEventListener("mousemove", (e) => {
     ctx.lineTo(currentX, currentY);
     ctx.stroke();
 
-    socket.send('move:' + prevX + ':' + prevY + ':' + currentX + ':' + currentY + ':');
+    socket.send('move:' + prevX + ':' + prevY + ':' + currentX + ':' + currentY + ':' + ctx.lineWidth + ':');
 
     prevX = currentX;
     prevY = currentY;
 
 });
-
 
