@@ -1,4 +1,19 @@
-﻿var socket;
+﻿// trailer
+const trailer = document.querySelector("#me");
+
+const myId = makeid(20);
+
+function makeid(length) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+var socket;
 
 var loc = window.location, new_uri;
 if (loc.protocol === "https:") {
@@ -28,13 +43,45 @@ socket.onmessage = function (msg) {
     }
 
     if (data[0] === 'color') {
-        ctx.strokeStyle = data[1];
+        changeColor(data[1]);
     }
 
     if (data[0] === 'clear') {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
+
+    if (data[0] === 'cur') {
+        const userId = data[1];
+        let t;
+
+
+        t = document.getElementById(userId);
+
+        if (t === null) {
+            t = document.createElement('div');
+            t.id = userId;
+            t.className = "trailer";
+            document.body.appendChild(t);
+            return;
+        }
+
+
+
+        const keyFrames = {
+            transform: `translate(${data[2]}px, ${data[3]}px)`
+        };
+
+        t.animate(keyFrames, {
+            fill: "forwards"
+        });
+    }
 };
+
+function changeColor(color) {
+    ctx.strokeStyle = color;
+    trailer.style.backgroundColor = color;
+
+}
 
 socket.onclose = function (event) {
     console.log('lost connection');
@@ -58,7 +105,7 @@ let clrs = document.querySelectorAll(".clr");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", () => {
-        ctx.strokeStyle = clr.dataset.clr;
+        changeColor(clr.dataset.clr);
 
         socket.send('color:' + clr.dataset.clr + ':');
     });
@@ -83,8 +130,7 @@ saveBtn.addEventListener("click", () => {
     a.click();
 });
 
-// trailer
-const trailer = document.getElementById("trailer");
+
 
 window.addEventListener("mousedown", (e) => draw = true);
 window.addEventListener("mouseup", (e) => draw = false);
@@ -94,9 +140,6 @@ window.addEventListener("mousemove", (e) => {
     const trailerX = e.clientX - trailer.offsetWidth / 2;
     const trailerY = e.clientY - trailer.offsetHeight / 2;
 
-    console.log(e.clientX);
-    console.log(trailerX);
-
     const keyFrames = {
         transform: `translate(${trailerX}px, ${trailerY}px)`
     };
@@ -104,6 +147,8 @@ window.addEventListener("mousemove", (e) => {
     trailer.animate(keyFrames, {
         fill: "forwards"
     });
+
+    socket.send('cur:' + myId + ':' + trailerX + ':' + trailerY + ':');
 
 
     if (prevX == null || prevY == null || !draw) {
@@ -122,10 +167,6 @@ window.addEventListener("mousemove", (e) => {
 
     prevX = currentX;
     prevY = currentY;
-
-
-
-
 
 });
 

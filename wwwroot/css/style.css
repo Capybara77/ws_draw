@@ -71,7 +71,7 @@ button {
     background-color: #0f65d4;
 }
 
-#trailer {
+.trailer {
     width: 20px;
     height: 20px;
     border-radius: 100%;
@@ -83,10 +83,4 @@ button {
     z-index: 100000;
 
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 500ms ease;
-}
-
-body:hover #trailer {
-    opacity: 1;
 }
