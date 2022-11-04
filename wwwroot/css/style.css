@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+body {
+    position: relative;
+}
+
 .nav {
     width: 310px;
     height: 50px;
@@ -65,4 +69,24 @@ button {
 
 .save {
     background-color: #0f65d4;
+}
+
+#trailer {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+
+    background-color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100000;
+
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+}
+
+body:hover #trailer {
+    opacity: 1;
 }

@@ -15,17 +15,30 @@ if (typeof (WebSocket) !== 'undefined') {
     socket = new MozWebSocket(new_uri);
 }
 
+//command:data1:data2:
+
 socket.onmessage = function (msg) {
     var data = msg.data.split(':');
-    ctx.beginPath();
-    ctx.moveTo(data[0], data[1]);
-    ctx.lineTo(data[2], data[3]);
-    ctx.stroke();
 
+    if (data[0] === 'move') {
+        ctx.beginPath();
+        ctx.moveTo(data[1], data[2]);
+        ctx.lineTo(data[3], data[4]);
+        ctx.stroke();
+    }
+
+    if (data[0] === 'color') {
+        ctx.strokeStyle = data[1];
+    }
+
+    if (data[0] === 'clear') {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
 };
 
 socket.onclose = function (event) {
     console.log('lost connection');
+
     if (typeof (WebSocket) !== 'undefined') {
         socket = new WebSocket(new_uri);
     } else {
@@ -46,12 +59,16 @@ clrs = Array.from(clrs);
 clrs.forEach(clr => {
     clr.addEventListener("click", () => {
         ctx.strokeStyle = clr.dataset.clr;
+
+        socket.send('color:' + clr.dataset.clr + ':');
     });
 });
 
 let clearBtn = document.querySelector(".clear");
 clearBtn.addEventListener("click", () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    socket.send('clear:');
 });
 
 // Saving drawing as image
@@ -66,9 +83,29 @@ saveBtn.addEventListener("click", () => {
     a.click();
 });
 
+// trailer
+const trailer = document.getElementById("trailer");
+
 window.addEventListener("mousedown", (e) => draw = true);
 window.addEventListener("mouseup", (e) => draw = false);
 window.addEventListener("mousemove", (e) => {
+
+
+    const trailerX = e.clientX - trailer.offsetWidth / 2;
+    const trailerY = e.clientY - trailer.offsetHeight / 2;
+
+    console.log(e.clientX);
+    console.log(trailerX);
+
+    const keyFrames = {
+        transform: `translate(${trailerX}px, ${trailerY}px)`
+    };
+
+    trailer.animate(keyFrames, {
+        fill: "forwards"
+    });
+
+
     if (prevX == null || prevY == null || !draw) {
         prevX = e.clientX;
         prevY = e.clientY;
@@ -81,9 +118,15 @@ window.addEventListener("mousemove", (e) => {
     ctx.lineTo(currentX, currentY);
     ctx.stroke();
 
-    socket.send(prevX + ':' + prevY + ':' + currentX + ':' + currentY + ':');
+    socket.send('move:' + prevX + ':' + prevY + ':' + currentX + ':' + currentY + ':');
 
     prevX = currentX;
     prevY = currentY;
 
+
+
+
+
 });
+
+
