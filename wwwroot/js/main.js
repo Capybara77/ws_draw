@@ -33,48 +33,54 @@ if (typeof (WebSocket) !== 'undefined') {
 //command:data1:data2:
 
 socket.onmessage = function (msg) {
-    var data = msg.data.split(':');
+    try {
+        var data = msg.data.split(':');
 
-    if (data[0] === 'move') {
-        ctx.beginPath();
-        ctx.moveTo(data[1], data[2]);
-        ctx.lineTo(data[3], data[4]);
-        ctx.stroke();
-    }
-
-    if (data[0] === 'color') {
-        changeColor(data[1]);
-    }
-
-    if (data[0] === 'clear') {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
-    if (data[0] === 'cur') {
-        const userId = data[1];
-        let t;
-
-
-        t = document.getElementById(userId);
-
-        if (t === null) {
-            t = document.createElement('div');
-            t.id = userId;
-            t.className = "trailer";
-            document.body.appendChild(t);
-            return;
+        if (data[0] === 'move') {
+            ctx.beginPath();
+            ctx.moveTo(data[1], data[2]);
+            ctx.lineTo(data[3], data[4]);
+            ctx.stroke();
         }
 
+        if (data[0] === 'color') {
+            changeColor(data[1]);
+        }
+
+        if (data[0] === 'clear') {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        if (data[0] === 'cur') {
+            const userId = data[1];
+            let t;
 
 
-        const keyFrames = {
-            transform: `translate(${data[2]}px, ${data[3]}px)`
-        };
+            t = document.getElementById(userId);
 
-        t.animate(keyFrames, {
-            fill: "forwards"
-        });
-    }
+            if (t === null) {
+                t = document.createElement('div');
+                t.id = userId;
+                t.className = "trailer";
+                document.body.appendChild(t);
+                return;
+            }
+
+
+
+            const keyFrames = {
+                transform: `translate(${data[2]}px, ${data[3]}px)`
+            };
+
+            t.animate(keyFrames, {
+                fill: "forwards"
+            });
+        }
+    } catch (e) {
+        console.log(e);
+    } 
+
+   
 };
 
 function changeColor(color) {
