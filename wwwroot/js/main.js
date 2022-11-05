@@ -9,6 +9,15 @@ let prevX = null;
 let prevY = null;
 
 
+document.getElementById("change").addEventListener("click", () => {
+    let oldimg = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    //resize canvas
+    canvas.height = 600;
+    canvas.width = 600;
+    ctx.putImageData(oldimg, 100, 100, 0, 0, ctx.canvas.width, ctx.canvas.height);
+});
+
 const customLineWidth = document.getElementById("lineValue");
 ctx.lineWidth = customLineWidth.value;
 
@@ -50,7 +59,7 @@ socket.onmessage = function (msg) {
         if (data[0] === 'move') {
             var d = ctx.lineWidth;
             var c = ctx.strokeStyle;
-
+            
             canvas.getContext("2d");
             ctx.beginPath();
             ctx.moveTo(data[1], data[2]);
@@ -142,12 +151,14 @@ customLineWidth.addEventListener("change", (e) => {
     if (customLineWidth.value < 1 || customLineWidth.value > 20) {
         alert("че ебанулся");
         ctx.lineWidth = 10;
+        return;
     }
     ctx.lineWidth = customLineWidth.value;
 });
 
 
 let draw = false;
+let resize = false;
 let clrs = document.querySelectorAll(".clr");
 clrs = Array.from(clrs);
 clrs.forEach(clr => {
@@ -175,16 +186,39 @@ saveBtn.addEventListener("click", () => {
     a.click();
 });
 
-
+let dx, dy;
 
 window.addEventListener("mousedown", (e) => {
+    if (e.which === 2) {
+        resize = true;
+        dx = e.clientX;
+        dy = e.clientY;
+        return;
+    }
+
     if (e.button !== 0) return;
     draw = true;
 });
 
 window.addEventListener("mouseup", (e) => {
+    if (resize) {
+        resize = false;
+
+        resizeWindow(e.clientX, e.clientY);
+    }
     draw = false;
 });
+
+
+function resizeWindow(dxNew, dyNew) {
+    let oldimg = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+    canvas.width = canvas.width;
+    canvas.height = canvas.height;
+
+    //resize canvas
+    ctx.putImageData(oldimg, dxNew - dx, dyNew - dy, 0, 0, ctx.canvas.width, ctx.canvas.height);
+}
 
 // window.addEventListener("blur",
 //     (e) => {
@@ -240,3 +274,48 @@ window.addEventListener("mousemove", (e) => {
 
 });
 
+
+//-------------------RoughCanvas---------------------
+
+let roughCanvas = rough.canvas(document.getElementById('canvas'));
+
+//roughCanvas.line(60, 60, 190, 60);
+//roughCanvas.line(60, 60, 190, 60, { strokeWidth: 5 });
+
+//roughCanvas.rectangle(10, 10, 100, 100);
+//roughCanvas.rectangle(140, 10, 100, 100, { fill: 'red' });
+
+//roughCanvas.ellipse(350, 50, 150, 80);
+//roughCanvas.ellipse(610, 50, 150, 80, { fill: 'blue', stroke: 'red' });
+
+//roughCanvas.linearPath([[690, 10], [790, 20], [750, 120], [690, 100]]);
+
+//roughCanvas.polygon([[690, 130], [790, 140], [750, 240], [690, 220]]);
+
+
+roughCanvas.arc(350, 300, 200, 180, Math.PI, Math.PI * 1.6, true);
+roughCanvas.arc(350, 300, 200, 180, 0, Math.PI / 2, true, {
+    stroke: 'red', strokeWidth: 4,
+    fill: 'rgba(255,255,0,0.4)', fillStyle: 'solid'
+});
+roughCanvas.arc(350, 300, 200, 180, Math.PI / 2, Math.PI, true, {
+    stroke: 'blue', strokeWidth: 2,
+    fill: 'rgba(255,0,255,0.4)'
+});
+
+
+// draw sine curve
+let points = [];
+for (let i = 0; i < 10; i++) {
+    let x = (400 / 20) * i + 10;
+    let xdeg = (Math.PI / 100) * x;
+    let y = Math.round(Math.sin(xdeg) * 90) + 500;
+    points.push([x, y]);
+}
+roughCanvas.curve(points, {
+    stroke: 'red', strokeWidth: 3
+});
+
+
+//roughCanvas.path('M37,17v15H14V17z M50,0H0v50h50z');
+//roughCanvas.path('M80 80 A 45 45, 0, 0, 0, 125 125 L 125 80 Z', { fill: 'green' });
