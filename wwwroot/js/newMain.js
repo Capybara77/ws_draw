@@ -201,7 +201,7 @@ clearBtn.addEventListener("click", () => {
 // ================================== MOUSE event
 
 let dx, dy;
-let step = 3;
+let step = 1;
 let counter = 0;
 let line = [];
 
