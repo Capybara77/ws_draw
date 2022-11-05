@@ -1,4 +1,4 @@
-// todo : прозрачность, толщина, сохранить, очистить, 
+// todo : сохранить, размер курсора  
 
 
 // ============================ ВЫБРАТЬ ЦВЕТ
@@ -42,7 +42,8 @@ colorPickerInput.addEventListener('input', (e) => {
 
 
 const lineWidthInput = document.getElementById("input-width")
-lineWidthInput.addEventListener('change', () => {
+lineWidthInput.addEventListener('change', (e) => {
+    e.stopPropagation();
     ctx.lineWidth = lineWidthInput.value
 })
 
@@ -143,8 +144,8 @@ socket.onmessage = function (msg) {
         }
 
         if (data[0] === 'line') {
-            roughCanvas.curve( JSON.parse(data[1]), {
-                stroke: ctx.strokeStyle, strokeWidth: ctx.lineWidth
+            roughCanvas.curve(JSON.parse(data[3]), {
+                stroke: data[1], strokeWidth: data[2]
             }); }
 
     } catch (e) {
@@ -186,17 +187,16 @@ clearBtn.addEventListener("click", () => {
 
 // ================================== SAVE
 
-// Saving drawing as image
-// let saveBtn = document.querySelector(".save");
-// saveBtn.addEventListener("click", () => {
-//     let data = canvas.toDataURL("imag/png");
-//     let a = document.createElement("a");
-//     a.href = data;
-//     // what ever name you specify here
-//     // the image will be saved as that name
-//     a.download = "sketch.png";
-//     a.click();
-// });
+let saveBtn = document.getElementById("save-btn");
+saveBtn.addEventListener("click", () => {
+    let data = canvas.toDataURL("imag/png");
+    let a = document.createElement("a");
+    a.href = data;
+    // what ever name you specify here
+    // the image will be saved as that name
+    a.download = "sketch.png";
+    a.click();
+});
 
 // ================================== MOUSE event
 
@@ -206,6 +206,7 @@ let counter = 0;
 let line = [];
 
 window.addEventListener("mousedown", (e) => {
+    e.stopPropagation();
     if (e.which === 2) {
         resize = true;
         dx = e.clientX;
@@ -217,6 +218,7 @@ window.addEventListener("mousedown", (e) => {
     line = [];
 
     if (e.button !== 0) return;
+    if (e.target.id !== "canvas") return;
     draw = true;
 });
 
@@ -228,7 +230,7 @@ window.addEventListener("mouseup", (e) => {
     }
     draw = false;
 
-    socket.send('line:' + JSON.stringify(line) + ':');
+    socket.send('line:' + ctx.strokeStyle + ':' + ctx.lineWidth + ':' + JSON.stringify(line) + ':');
 });
 
 window.addEventListener("mousemove", (e) => {
