@@ -1,13 +1,11 @@
-// todo : сохранить, размер курсора  
-
-
+// todo : 
 // ============================ ВЫБРАТЬ ЦВЕТ
 
 const colorPickerButton = document.querySelector('.color-picker');
 const colorListContainer = document.getElementById('color-list');
 const colorsItemList = document.querySelectorAll('.color-item');
 const colorPickerInput = document.getElementById('color-picker-input');
-const trailer = document.getElementById("me")
+const trailer = document.getElementById("me");
 
 const myId = makeid(20);
 
@@ -25,7 +23,7 @@ for (let colorItem of colorsItemList) {
     colorItem.addEventListener('click', (e) => {
         const clickedColor = e.target.style.backgroundColor;
         colorPickerButton.style.backgroundColor = clickedColor;
-        changeColor(clickedColor)
+        changeColor(clickedColor);
         colorListContainer.style.display = 'none';
     });
 }
@@ -43,8 +41,12 @@ colorPickerInput.addEventListener('input', (e) => {
 
 const lineWidthInput = document.getElementById("input-width")
 lineWidthInput.addEventListener('change', (e) => {
+    const newVal = lineWidthInput.value;
     e.stopPropagation();
-    ctx.lineWidth = lineWidthInput.value
+    if (newVal > lineWidthInput.max) return;
+    ctx.lineWidth = newVal
+    trailer.style.width = newVal
+    trailer.style.height = newVal
 })
 
 //  ====================================== CANVAS
@@ -53,7 +55,7 @@ const canvas = document.getElementById("canvas");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
 const ctx = canvas.getContext("2d");
-ctx.lineWidth = 10;
+ctx.lineWidth = colorPickerInput.value;
 
 let prevX = null;
 let prevY = null;
@@ -192,8 +194,6 @@ saveBtn.addEventListener("click", () => {
     let data = canvas.toDataURL("imag/png");
     let a = document.createElement("a");
     a.href = data;
-    // what ever name you specify here
-    // the image will be saved as that name
     a.download = "sketch.png";
     a.click();
 });
