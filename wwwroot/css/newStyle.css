@@ -146,14 +146,14 @@ button {
     pointer-events: none;
 }
 
-.opacity-options {
+.options-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
 }
 
-.opacity-options input {
+.width-options input {
     width: 100%;
 }
 
@@ -181,18 +181,36 @@ button {
     font-weight: bold;
 }
 
-.btn::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 3px;
-    background-color: black;
+/* options */
 
-    transition: width 200ms ease-in;
+.line-width-variants {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-.btn:hover::after {
+.line-width-variants > * {
+    flex: 1 1 0;
+}
+
+.option-btn {
+    background-color: white;
+    border: 2px solid black;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.option-btn.current-width {
+    background-color: lightseagreen;
+    font-weight: bold;
+}
+
+#input-opacity {
     width: 100%;
+}
+
+
+.modes-list, .shape-list {
+    flex-wrap: wrap;
 }
