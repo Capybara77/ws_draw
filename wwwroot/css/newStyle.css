@@ -94,20 +94,6 @@ button {
     padding: 8px 10px;
 }
 
-.trailer {
-    width: 15px;
-    height: 15px;
-    border-radius: 100%;
-
-    background-color: black;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100000;
-
-    pointer-events: none;
-}
-
 .color-list {
     position: absolute;
     left: 30px;
@@ -163,14 +149,20 @@ button {
     left: 50%;
     transform: translate(-50%, 0);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
     border: 2px solid lightgray;
     border-radius: 5px;
     background-color: white;
+    padding: 5px 10px;
+}
+
+.cursor-container > * {
+}
+
+.cursor-item {
+    cursor: pointer;
 }
 
 .btn {
@@ -202,8 +194,8 @@ button {
 }
 
 .option-btn.current-width {
-    background-color: lightseagreen;
-    font-weight: bold;
+    background-color: lightblue;
+    font: italic;
 }
 
 #input-opacity {
@@ -213,4 +205,24 @@ button {
 
 .modes-list, .shape-list {
     flex-wrap: wrap;
+}
+
+.shape-btn {
+    background-color: white;
+    border: 2px solid black;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.btn-icon {
+    pointer-events: none;
+    width: 20px;
+    height: 100%;
+}
+
+.top-btn {
+    background-color: white;
+    border: 2px solid black;
+    padding: 6px;
+    border-radius: 5px;
 }
