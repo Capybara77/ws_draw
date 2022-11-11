@@ -66,6 +66,10 @@ button {
     background-color: black;
 }
 
+#stroke-color-picker {
+    background-color: rgb(95, 61, 196);
+}
+
 .color-picker-input {
     border: 1px solid lightgray;
     border-radius: 4px;
@@ -156,9 +160,6 @@ button {
     border-radius: 5px;
     background-color: white;
     padding: 5px 10px;
-}
-
-.cursor-container > * {
 }
 
 .cursor-item {
