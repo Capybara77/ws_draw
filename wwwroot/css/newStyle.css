@@ -23,19 +23,13 @@ button {
 .canvas-container {
     position: relative;
     overflow: hidden;
-
-    /* height: 100vh;
-    width: 100vw; */
-    /* border: 2px solid black; */
-    /* border-radius: 10px; */
 }
 
 #canvas {
-    /*position: absolute;*/
-    /* width: 1920px;
-    height: 1000px; */
     overflow: hidden;
 }
+
+/* ======================== OPTIONS start ========================  */
 
 .options {
     width: 200px;
@@ -54,9 +48,45 @@ button {
     background-color: white;
 }
 
+.options-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .options-color {
     display: flex;
     flex-direction: column;
+}
+
+.option-btn {
+    background-color: white;
+    border: 2px solid black;
+    padding: 6px;
+    border-radius: 5px;
+}
+
+.option-btn.current-width {
+    border: 2px solid lightblue;
+    font: italic;
+}
+
+/* ======================== OPTIONS end ========================  */
+
+
+/* ======================== COLOR PICKERS start ======================== */
+
+.color-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.color-container input {
+    width: 100px;
+    padding: 8px 10px;
 }
 
 .color-picker {
@@ -86,18 +116,6 @@ button {
     outline: none;
 }
 
-.color-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
-
-.color-container input {
-    width: 100px;
-    padding: 8px 10px;
-}
-
 .color-list {
     position: absolute;
     left: 30px;
@@ -121,6 +139,10 @@ button {
     border-radius: 4px;
     background-color: cadetblue;
 }
+/* ======================== COLOR PICKERS end ======================== */
+
+
+/* ======================== TRAILER start ======================== */
 
 .trailer {
     width: 15px;
@@ -136,12 +158,9 @@ button {
     pointer-events: none;
 }
 
-.options-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
+/* ======================== TRAILER end ======================== */
+
+
 
 .width-options input {
     width: 100%;
@@ -176,6 +195,8 @@ button {
 
 /* options */
 
+/* ======================== ÿ»–»Õ¿ start ========================  */
+
 .line-width-variants {
     display: flex;
     justify-content: center;
@@ -187,26 +208,23 @@ button {
     flex: 1 1 0;
 }
 
-.option-btn {
-    background-color: white;
-    border: 2px solid black;
-    padding: 6px;
-    border-radius: 5px;
-}
+/* ======================== ÿ»–»Õ¿ end ========================  */
 
-.option-btn.current-width {
-    background-color: lightblue;
-    font: italic;
-}
+
+/*  ======================== œ–Œ«–¿◊ÕŒ—“‹ start ======================== */
 
 #input-opacity {
     width: 100%;
 }
 
+/*  ======================== œ–Œ«–¿◊ÕŒ—“‹ end ======================== */
+
 
 .modes-list, .shape-list {
     flex-wrap: wrap;
 }
+
+
 
 .shape-btn {
     background-color: white;
@@ -227,3 +245,34 @@ button {
     padding: 6px;
     border-radius: 5px;
 }
+
+/* ======================== MODES start ======================== */
+
+.modes-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.15rem;
+}
+
+.mode-btn {
+    background-color: white;
+    border: 2ps solid black;
+    border-radius: 7px;
+    aspect-ratio: 1 / 1;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition: border 200ms ease;
+}
+
+.mode-btn:hover {
+    border: 2px solid lightgray;
+}
+
+.active {
+    background-color: rgb(189, 212, 255);
+    
+}
+
+/* ======================== MODES end ======================== */
