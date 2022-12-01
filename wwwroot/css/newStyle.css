@@ -22,6 +22,8 @@
     --clr-fill: rgb(51, 51, 51);
 
     --clr-shortcut: rgb(165, 165, 165);
+
+    --clr-default: rgb(54, 79, 199);
 }
 
 * {
@@ -46,6 +48,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .main-container,
@@ -66,7 +69,7 @@ button {
     background-color: var(--clr-canvas);
 }
 
-/* ======================== TRAILER ======================== */
+/* ======================== КУРСОР ======================== */
 
 .trailer {
     width: 15px;
@@ -91,7 +94,7 @@ button {
     transform: translate(-50%, 0);
 
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 1rem;
     border: 2px solid var(--clr-border);
     border-radius: 5px;
@@ -116,7 +119,6 @@ button {
     height: 100%;
 
     color: var(--clr-icon);
-    /* fill: var(--clr-icon); */
 }
 
 .fill-icon {
@@ -139,10 +141,6 @@ button {
     font-size: 10px;
     font-weight: bold;
 }
-
-/* #pointer-btn {
-    position: relative;
-} */
 
 #pointer-btn::after {
     content: '1';
@@ -204,6 +202,26 @@ button {
     color: var(--clr-text);
 }
 
+#text-btn::after {
+    content: '7';
+    position: absolute;
+    bottom: 1px;
+    right: -1px;
+    width: 10px;
+    height: 10px;
+    color: var(--clr-text);
+}
+
+#image-btn::after {
+    content: '8';
+    position: absolute;
+    bottom: 1px;
+    right: -1px;
+    width: 10px;
+    height: 10px;
+    color: var(--clr-text);
+}
+
 .active-shape {
     background-color: var(--clr-primary-active);
     color: var(--clr-primary);
@@ -236,7 +254,7 @@ button {
     gap: 0.5rem;
 }
 
-/* ======================== COLOR PICKERS  ======================== */
+/* ======================== ВЫБОР ЦВЕТА  ======================== */
 
 .options-color-container {
     display: flex;
@@ -260,7 +278,7 @@ button {
     width: 30px;
     height: 30px;
     border-radius: 4px;
-    background-color: var(--clr-black);
+    background-color: var(--clr-default);
     cursor: pointer;
 }
 
@@ -307,7 +325,7 @@ button {
     border-radius: 4px;
 }
 
-/* =========================== ������� =========================== */
+/* =========================== ШИРИНА =========================== */
 
 .options-width-container {
     display: flex;
@@ -335,7 +353,7 @@ button {
     color: var(--clr-primary);
 }
 
-/*  ======================== ������������  ======================== */
+/*  ======================== ПРОЗРАЧНОСТЬ  ======================== */
 
 #input-opacity {
     width: 100%;
@@ -369,7 +387,7 @@ input[type='range']::-webkit-slider-runnable-track {
     background: transparent;
 }
 
-/* ======================== FILL STYLES ======================== */
+/* ======================== ЗАЛИВКА ======================== */
 
 .fill-style-options-container {
     display: grid;
@@ -394,7 +412,7 @@ input[type='range']::-webkit-slider-runnable-track {
     color: var(--clr-primary-dark);
 }
 
-/* ======================== ZOOM ======================== */
+/* ======================== ЗУМ ======================== */
 
 .zoom-container {
     position: absolute;
@@ -404,7 +422,6 @@ input[type='range']::-webkit-slider-runnable-track {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* gap: 0.3rem; */
 
     border: 1px solid var(--clr-border);
     border-radius: 5px;
@@ -448,9 +465,6 @@ input[type='range']::-webkit-slider-runnable-track {
 .zoom-btn:hover {
     border: 1px solid var(--clr-border);
 }
-/* test start */
-
-/* test end */
 
 /* ======================== SETTINGS ======================== */
 
@@ -517,7 +531,6 @@ input[type='range']::-webkit-slider-runnable-track {
 }
 
 .settings-item-icon {
-    /* margin-top: 2px; */
     margin-right: 5px;
 
     width: 20px;
@@ -537,55 +550,6 @@ input[type='range']::-webkit-slider-runnable-track {
 .settings-theme-container {
     padding: 5px 10px;
 }
-
-/* .settings-container button {
-    width: 100%;
-    background-color: inherit;
-    outline: none;
-    border: none;
-    font-size: 1.125rem;
-    text-align: start;
-}
-
-.settings-theme-container > select {
-    width: 100%;
-    background-color: inherit;
-    outline: none;
-    border: none;
-    font-size: 1.125rem;
-}
-
-.settings-save-container,
-.settings-clear-all-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.settings-icon {
-    width: 20px;
-    height: 20px;
-}
-
-.settings-theme-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.settings-show-btn {
-    background-color: transparent;
-    border: none;
-    outline: none;
-
-    cursor: pointer;
-}
-
-.settings-show-icon {
-    width: 30px;
-    height: 30px;
-
-    stroke: var(--clr-icon);
-} */
 
 /* ======================== ТЕМНАЯ ТЕМА ======================== */
 
@@ -627,4 +591,63 @@ input[type='range']::-webkit-slider-runnable-track {
 
     --clr-icon: #ccc;
     --clr-fill: #ccc;
+}
+
+/* ======================== ПОДТВЕРЖДЕНИЕ ======================== */
+
+.confirm-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    z-index: 10000000000000000000000000;
+
+    background-color: var(--clr-background-transparent);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-container {
+    background-color: var(--clr-background-transparent);
+    border: 2px solid var(--clr-border);
+    border-radius: 5px;
+
+    padding: 20px;
+}
+
+.hr-custom {
+    width: 100%;
+    height: 2px;
+    background-color: var(--clr-border);
+    margin: 20px 0;
+}
+
+.confirm-title {
+    color: var(--clr-text);
+    font-size: 1.5rem;
+}
+
+.confirm-btns-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.confirm-btn {
+    color: var(--clr-text);
+    background-color: var(--clr-background-transparent);
+    border: 2px solid var(--clr-border);
+    border-radius: 5px;
+
+    padding: 7px 12px;
+    font-size: 1.125rem;
+    cursor: pointer;
+}
+
+#confirm-agree {
+    background-color: rgb(177, 97, 97);
 }
